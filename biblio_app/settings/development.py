@@ -17,12 +17,20 @@ SITE_NAME = "Real Estate"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": env("POSTGRES_ENGINE"),
+        "NAME": env("POSTGRES_DB"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("PG_HOST"),
+        "PORT": env("PG_PORT"),
     }
 }
 
+GRAPH_MODELS = {
+    "all_applications": True,
+    "group_models": True,
+}
 
 # Celery settings
 # CELERY_BROKER_URL = env("CELERY_BROKER")

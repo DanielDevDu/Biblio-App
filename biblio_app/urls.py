@@ -14,8 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    ]
+
+
+# Custom views of admin site
+admin.site.site_header = "BiblioApp Administration"
+admin.site.site_title = "BiblioApp Admin Portal"
+admin.site.index_title = "Welcome to BiblioApp Admin Portal"
