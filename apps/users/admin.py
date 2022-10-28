@@ -31,14 +31,16 @@ class UserAdmin(BaseUserAdmin):
         "last_name",
         "username",
         "is_staff",
+        "is_admin",
+        "is_superuser",
         "is_active",
-        "type"
+        "role"
     ]
     list_display_links = ["id", "email"]
     list_filter = [
         "is_staff",
         "is_active",
-        "type",
+        "role",
     ]
     fieldsets = (
         (

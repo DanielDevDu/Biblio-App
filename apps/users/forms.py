@@ -20,7 +20,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = User
-        fields = ["email", "first_name", "last_name", "username", "type"]
+        fields = ["email", "first_name", "last_name", "username", "role"]
         error_class = "error"
 
 
@@ -46,5 +46,5 @@ class CustomLibrarianCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = User
-        fields = ["email", "first_name", "last_name", "username", "type"]
+        fields = ["email", "first_name", "last_name", "username", "role"]
         error_class = "error"
