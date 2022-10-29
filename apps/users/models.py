@@ -101,7 +101,6 @@ class LibrarianManager(models.Manager):
     ------------------
     """
     def get_queryset(self, *args, **kwargs):
-        print("In Queryset Librarian Manager")
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(role = User.Role.LIBRARIAN)
         return queryset
