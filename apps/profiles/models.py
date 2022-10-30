@@ -40,13 +40,12 @@ class ReaderStatus(models.TextChoices):
     CANCELED = "CANCELED", _("Canceled")
     SUSPENDED = "SUSPENDED", _("Suspended")
 
-class ReaderProfile(TimeStampedUUIDModel):
+class UserProfile(models.Model):
     """
     -------------------------------
     Profile Class to Reader User
     -------------------------------
     """
-    user = models.OneToOneField(User, related_name="reader_profile", on_delete=models.CASCADE)
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, default="+41524204242"
     )
@@ -72,6 +71,19 @@ class ReaderProfile(TimeStampedUUIDModel):
         blank=False,
         null=False,
     )
+
+    class Meta:
+        verbose_name = _("User Profile")
+        verbose_name_plural = _("User Profiles")
+        abstract = True
+
+class ReaderProfile(TimeStampedUUIDModel, UserProfile):
+    """
+    -------------------------------
+    Profile Class to Reader User
+    -------------------------------
+    """
+    user = models.OneToOneField(User, related_name="reader_profile", on_delete=models.CASCADE)
 
     total_books_borrowed = models.IntegerField(
         verbose_name=_("Number of Books Borrowed"), default=0, null=True, blank=True
@@ -86,38 +98,14 @@ class ReaderProfile(TimeStampedUUIDModel):
     def __str__(self):
         return f"{self.user.username}'s profile"
     
-class LibrarianProfile(TimeStampedUUIDModel):
+class LibrarianProfile(TimeStampedUUIDModel, UserProfile):
     """
     -------------------------------
     Profile Class to Librarian User
     -------------------------------
     """
     user = models.OneToOneField(User, related_name="librarian_profile", on_delete=models.CASCADE)
-    phone_number = PhoneNumberField(
-        verbose_name=_("Phone Number"), max_length=30, default="+41524204242"
-    )
-    about_me = models.TextField(
-        verbose_name=_("About me"), default="say something about yourself"
-    )
-    profile_photo = models.ImageField(
-        verbose_name=_("Profile Photo"), default="/profile_default.png"
-    )
-    gender = models.CharField(
-        verbose_name=_("Gender"),
-        choices=Gender.choices,
-        default=Gender.OTHER,
-        max_length=20,
-    )
-    country = CountryField(
-        verbose_name=_("Country"), default="CO", blank=False, null=False
-    )
-    city = models.CharField(
-        verbose_name=_("City"),
-        max_length=180,
-        default="Medellin",
-        blank=False,
-        null=False,
-    )
+
     # library  = models.ForeignKey(Library, related_name="librarians", on_delete=models.CASCADE)
 
     def __str__(self):
