@@ -46,20 +46,23 @@ class UserProfile(models.Model):
     Profile Class to Reader User
     -------------------------------
     """
+
     phone_number = PhoneNumberField(
         verbose_name=_("Phone Number"), max_length=30, default="+41524204242"
     )
     about_me = models.TextField(
-        verbose_name=_("About me"), default="say something about yourself"
+        verbose_name=_("About me"), default="say something about yourself", blank = True, null = True
     )
     profile_photo = models.ImageField(
-        verbose_name=_("Profile Photo"), default="/profile_default.png"
+        verbose_name=_("Profile Photo"), default="/profile_default.png", blank = True, null = True
     )
     gender = models.CharField(
         verbose_name=_("Gender"),
         choices=Gender.choices,
         default=Gender.OTHER,
         max_length=20,
+        blank = True,
+        null = True
     )
     country = CountryField(
         verbose_name=_("Country"), default="CO", blank=False, null=False
@@ -83,7 +86,8 @@ class ReaderProfile(TimeStampedUUIDModel, UserProfile):
     Profile Class to Reader User
     -------------------------------
     """
-    user = models.OneToOneField(User, related_name="reader_profile", on_delete=models.CASCADE)
+    role_class = "reader"
+    user = models.OneToOneField(User, related_name="{}_profile".format(role_class), on_delete=models.CASCADE)
 
     total_books_borrowed = models.IntegerField(
         verbose_name=_("Number of Books Borrowed"), default=0, null=True, blank=True
@@ -104,7 +108,8 @@ class LibrarianProfile(TimeStampedUUIDModel, UserProfile):
     Profile Class to Librarian User
     -------------------------------
     """
-    user = models.OneToOneField(User, related_name="librarian_profile", on_delete=models.CASCADE)
+    role_class = "librarian"
+    user = models.OneToOneField(User, related_name="{}_profile".format(role_class), on_delete=models.CASCADE)
 
     # library  = models.ForeignKey(Library, related_name="librarians", on_delete=models.CASCADE)
 

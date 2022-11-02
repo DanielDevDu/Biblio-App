@@ -41,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(verbose_name=_("Last Name"), max_length=50)
     email = models.EmailField(verbose_name=_("Email"), max_length=255, unique=True)
 
-    is_active = models.BooleanField(verbose_name=_("Is Active"), default=False)
+    is_active = models.BooleanField(verbose_name=_("Is Active"), default=True)
     is_admin = models.BooleanField(verbose_name=_("Is Admin"), default=False)
     is_staff = models.BooleanField(verbose_name=_("Is Staff"), default=False)
     is_superuser = models.BooleanField(verbose_name=_("Is SuperUser"), default=False)
@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.CharField(max_length = 20, choices = Role.choices, default = Role.READER)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "last_name"]
+    REQUIRED_FIELDS = ["username", "first_name", "last_name", "role"]
 
     objects = CustomUserManager()
 
@@ -63,10 +63,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         ordering = ["-date_joined"]
 
     def __str__(self):
-        return self.full_name
+        return self.get_full_name
 
     @property
-    def full_name(self):
+    def get_full_name(self):
         """
         ------------------------------
         Return the user's full name
@@ -122,7 +122,7 @@ class Librarian(User):
     objects = LibrarianManager()
 
     def __str__(self):
-        return "Librarian: " + self.full_name
+        return "Librarian: " + self.get_full_name
 
     def save(self, *args, **kwargs):
         """
@@ -163,4 +163,4 @@ class Reader(User):
     objects = ReaderManager()
 
     def __str__(self):
-        return "Reader: " + self.full_name
+        return "Reader: " + self.get_full_name

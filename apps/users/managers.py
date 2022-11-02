@@ -123,6 +123,7 @@ class CustomUserManager(BaseUserManager):
         superuser = self.create_user(
             username, first_name, last_name, email, password, **extra_fields
         )
+        superuser.role = "ADMIN"
         superuser.save(using=self._db)
         return super
 
