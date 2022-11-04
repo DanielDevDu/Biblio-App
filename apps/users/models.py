@@ -89,8 +89,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         Save User Model
         ------------------------------
         """
-        if not self.pk:
-            self.role = self.base_role
         return super().save(*args, **kwargs)
 
 

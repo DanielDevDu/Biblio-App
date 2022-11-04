@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.role == "LIBRARIAN":
         LibrarianProfile.objects.create(user=instance)
-    if created and instance.role == "READER":
+    elif created and instance.role == "READER":
         ReaderProfile.objects.create(user=instance)
 
 
@@ -30,6 +30,6 @@ def save_user_profile(sender, instance, **kwargs):
     if instance.role == "LIBRARIAN":
         instance.librarian_profile.save()
         logger.info(f"{instance}'s profile for Librarian created Succesfully")
-    if instance.role == "READER":
+    elif instance.role == "READER":
         instance.reader_profile.save()
         logger.info(f"{instance}'s profile for Reader created Succesfully")
