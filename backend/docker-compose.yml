@@ -32,6 +32,21 @@ services:
     networks:
       - biblio-app
 
+  nginx:
+    restart: always
+    depends_on:
+      - api
+    volumes:
+      - static_volume_biblio:/app/staticfiles
+      - media_volume_biblio:/app/mediafiles
+    build:
+      context: ./docker/local/nginx
+      dockerfile: Dockerfile
+    ports:
+      - '8080:80'
+    networks:
+      - biblio-app
+
 networks:
   biblio-app:
     driver: bridge
