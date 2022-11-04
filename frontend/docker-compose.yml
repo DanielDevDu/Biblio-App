@@ -1,0 +1,18 @@
+# front/docker-compose.yml
+version: '2'
+services:
+  frontend-react:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.dev
+    restart: on-failure
+    ports:
+      - '5173:5173'
+    volumes:
+      - .:/frontend
+      - /frontend/node_modules
+    networks:
+      - backend_biblio-app
+networks:
+  backend_biblio-app:
+    external: true

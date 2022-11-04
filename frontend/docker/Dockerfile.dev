@@ -1,0 +1,16 @@
+FROM node:18-alpine3.16
+
+LABEL version="1.0"
+LABEL description="React Frontend for Real Estate API"
+
+WORKDIR /frontend
+
+COPY ./package*.json ./
+
+RUN npm install --unsafe-perm=true --allow-root
+
+RUN chown -R node:node /frontend/node_modules
+
+COPY . .
+
+CMD ["npm", "run", "start"]
