@@ -8,38 +8,35 @@ services:
     command: /start
     volumes:
       - .:/app
-      - static_volume:/app/staticfiles
-      - media_volume:/app/mediafiles
-    # ports:
-    #   - '8000:8000'
-    # expose:
-    #   - '8000'
+      - static_volume_biblio:/app/staticfiles
+      - media_volume_biblio:/app/mediafiles
+    ports:
+      - '8000:8000'
     env_file:
       - .env
     depends_on:
-      - postgres-db
-      - redis
+      - postgres-db-biblio
     networks:
-      - estate-react
+      - biblio-app
 
-  postgres-db:
+  postgres-db-biblio:
     image: postgres:14.0-alpine
     ports:
       - '5432:5432'
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data_biblio:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     networks:
-      - estate-react
+      - biblio-app
 
 networks:
   biblio-app:
     driver: bridge
 
 volumes:
-  static_volume:
-  media_volume:
-  postgres_data:
+  static_volume_biblio:
+  media_volume_biblio:
+  postgres_data_biblio:
