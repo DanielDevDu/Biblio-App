@@ -1,6 +1,6 @@
 FROM python:3.10.7-slim-buster
 
-ENV APP_HOME=/app
+ENV APP_HOME=/backend
 RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
 RUN mkdir $APP_HOME/mediafiles
@@ -15,7 +15,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN pip3 install --upgrade pip
 
-COPY ./requirements.txt /app/requirements.txt
+COPY ./requirements.txt /backend/requirements.txt
 
 RUN pip3 install -r requirements.txt
 

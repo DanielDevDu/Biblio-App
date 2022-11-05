@@ -7,17 +7,18 @@ services:
       dockerfile: ./docker/local/django/Dockerfile
     command: /start
     volumes:
-      - .:/app
-      - static_volume_biblio:/app/staticfiles
-      - media_volume_biblio:/app/mediafiles
-    ports:
-      - '8000:8000'
+      - .:/backend
+      - static_volume_biblio:/backend/staticfiles
+      - media_volume_biblio:/backend/mediafiles
+    # ports:
+    #   - '8000:8000'
     env_file:
       - .env
     depends_on:
       - postgres-db-biblio
     networks:
-      - biblio-app
+      - frontend
+      - backend
 
   postgres-db-biblio:
     image: postgres:14.0-alpine
@@ -30,25 +31,12 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     networks:
-      - biblio-app
-
-  nginx:
-    restart: always
-    depends_on:
-      - api
-    volumes:
-      - static_volume_biblio:/app/staticfiles
-      - media_volume_biblio:/app/mediafiles
-    build:
-      context: ./docker/local/nginx
-      dockerfile: Dockerfile
-    ports:
-      - '8080:80'
-    networks:
-      - biblio-app
+      - backend
 
 networks:
-  biblio-app:
+  frontend:
+    driver: bridge
+  backend:
     driver: bridge
 
 volumes:

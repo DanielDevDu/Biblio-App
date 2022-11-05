@@ -6,13 +6,34 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile.dev
     restart: on-failure
-    ports:
-      - '5173:5173'
+    # ports:
+    #   - '5173:5173'
     volumes:
       - .:/frontend
       - /frontend/node_modules
     networks:
-      - backend_biblio-app
+      - backend_frontend
+
+  nginx:
+    restart: always
+    depends_on:
+      - frontend-react
+    volumes:
+      - backend_static_volume_biblio:/backend/staticfiles
+      - backend_media_volume_biblio:/backend/mediafiles
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - '8080:80'
+    networks:
+      - backend_frontend
 networks:
-  backend_biblio-app:
+  backend_frontend:
+    external: true
+
+volumes:
+  backend_static_volume_biblio:
+    external: true
+  backend_media_volume_biblio:
     external: true

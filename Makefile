@@ -38,41 +38,41 @@ collectstatic:
 	cd backend && docker-compose exec api python manage.py collectstatic --no-input && cd ..
 
 volume:
-	docker volume inspect biblio_app_postgres_data
+	cd backend && docker volume inspect backend_postgres_data_biblio && cd ..
 
 backend:
-	docker-compose exec -it api bash
+	cd backend && docker-compose exec -it api bash && cd ..
 
 db:
 	cd backend && docker-compose exec postgres-db-biblio psql --username=admin --dbname=biblio
 
-test:
-	cd backend && docker-compose exec api pytest -p no:warnings --cov=.
+# test:
+# 	cd backend && docker-compose exec api pytest -p no:warnings --cov=.
 
-test-html:
-	cd backend && docker-compose exec api pytest -p no:warnings --cov=. --cov-report=html
+# test-html:
+# 	cd backend && docker-compose exec api pytest -p no:warnings --cov=. --cov-report=html
 
-flake8:
-	cd backend && docker-compose exec api flake8 #
+# flake8:
+# 	cd backend && docker-compose exec api flake8 #
 
-black-check:
-	cd backend && docker-compose exec api pip install --upgrade black==22.3.0
-	cd backend && docker-compose exec api black --check --exclude=migrations .
+# black-check:
+# 	cd backend && docker-compose exec api pip install --upgrade black==22.3.0
+# 	cd backend && docker-compose exec api black --check --exclude=migrations .
 
-black-diff:
-	cd backend && docker-compose exec api black --diff --exclude=migrations . #
+# black-diff:
+# 	cd backend && docker-compose exec api black --diff --exclude=migrations . #
 
-black:
-	cd backend && docker-compose exec api black --exclude=migrations . #
+# black:
+# 	cd backend && docker-compose exec api black --exclude=migrations . #
 
-isort-check:
-	cd backend && docker-compose exec api isort . --check-only --skip env --skip migrations #
+# isort-check:
+# 	cd backend && docker-compose exec api isort . --check-only --skip env --skip migrations #
 
-isort-diff:
-	cd backend && docker-compose exec api isort . --diff --skip env --skip migrations #
+# isort-diff:
+# 	cd backend && docker-compose exec api isort . --diff --skip env --skip migrations #
 
-isort:
-	cd backend && docker-compose exec api isort . --skip env --skip migrations #
+# isort:
+# 	cd backend && docker-compose exec api isort . --skip env --skip migrations #
 
 # Frontent
 
@@ -94,7 +94,33 @@ logs-frontend:
 c-logs-frontend:
 	cd frontend && docker-compose logs -f && cd ..
 
+frontend:
+	cd frontend && docker-compose exec -it frontend-react bash && cd ..
+
 # Shared or General
 
 ports:
 	sudo lsof -i -P -n | grep LISTEN
+
+composes:
+	cd backend && docker-compose ps && cd ..
+	cd frontend && docker-compose ps && cd ..
+
+build:
+	make build-backend
+	make build-frontend
+
+up:
+	make up-backend
+	sleep 5 | echo "Waiting for backend to start"
+	make up-frontend
+
+down:
+	make down-frontend
+	make down-backend
+
+down-v:
+	make down-v-frontend
+	make down-v-backend
+
+
