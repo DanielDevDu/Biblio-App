@@ -117,3 +117,15 @@ class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
         fields = ["id", "username", "email", "first_name", "last_name", "password", "role"]
+    
+    def validate_role(self, value):
+        """
+        --------------------------------
+        Validate the role of the user
+        --------------------------------
+        """
+        if value in ["ADMIN", "admin"]:
+            raise serializers.ValidationError("You can't create an admin")
+        elif value not in ["reader", "librarian", "READER", "LIBRARIAN"]:
+            raise serializers.ValidationError("Invalid role")
+        return value

@@ -10,7 +10,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/auth/", include("djoser.urls")),
     path("api/v1/auth/", include("djoser.urls.jwt")),
-    # path('api/', include("apps.users.urls")),
+    # path("api/v1/", include("apps.api.urls")),
+    path("api/v1/profile/", include("apps.profiles.api.routers"))
+
+    # path('api/', include("apps.users.api.urls")),
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # path('accounts/', include('django.contrib.auth.urls'))
 ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

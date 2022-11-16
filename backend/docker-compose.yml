@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   api:
+    container_name: biblio_app_api
     build:
       context: .
       dockerfile: ./docker/local/django/Dockerfile
@@ -10,8 +11,10 @@ services:
       - .:/backend
       - static_volume_biblio:/backend/staticfiles
       - media_volume_biblio:/backend/mediafiles
-    # ports:
-    #   - '8000:8000'
+    ports:
+      - '8000:8000'
+    # expose:
+    #   - '8000'
     env_file:
       - .env
     depends_on:
@@ -21,6 +24,7 @@ services:
       - backend_biblio
 
   postgres-db-biblio:
+    container_name: biblio_app_postgres_db
     image: postgres:14.0-alpine
     ports:
       - '5432:5432'
@@ -34,6 +38,7 @@ services:
       - backend_biblio
 
   nginx:
+    container_name: biblio_app_backend_nginx
     restart: always
     depends_on:
       - api
@@ -44,7 +49,7 @@ services:
       context: ./docker/local/nginx
       dockerfile: Dockerfile
     ports:
-      - '8081:80'
+      - '8080:80'
     networks:
       - frontend_biblio
 
