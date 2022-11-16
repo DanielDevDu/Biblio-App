@@ -66,6 +66,7 @@ LOCAL_APPS = [
     "apps.common",
     "apps.users",
     "apps.profiles",
+    "apps.api",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -190,10 +191,10 @@ DJOSER = {
     "ACTIVATION_URL": "activate/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
     "SERIALIZERS": {
-        "user_create": "apps.users.serializers.CreateUserSerializer,",
-        "user": "apps.users.serializers.UserCreateSerializer",
+        "user_create": "apps.users.serializers.api.CreateUserSerializer,",
+        "user": "apps.users.api.serializers.UserCreateSerializer",
         # "current_user": "apps.users.serializers.UserSerializer",
-        "user_delete": "djoser.serializers.UserDeleteSerializer",
+        "user_delete": "djoser.serializers.api.UserDeleteSerializer",
     },
 }
 
