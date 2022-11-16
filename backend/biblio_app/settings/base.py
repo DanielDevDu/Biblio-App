@@ -60,6 +60,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "djoser",
     "rest_framework_simplejwt",
+    'drf_yasg',
 ]
 
 LOCAL_APPS = [
@@ -238,3 +239,14 @@ logging.config.dictConfig(
         },
     }
 )
+
+# Swagger settings
+
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': "none"
+}
+
+# REDOC_SETTINGS = {
+#    'LAZY_RENDERING': False,
+#    ...
+# }

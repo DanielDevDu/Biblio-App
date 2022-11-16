@@ -102,6 +102,7 @@ class ReaderProfileSerializer(ProfileSerializer):
             "current_books_borrowed",
             "total_books_borrowed",
             "role",
+            "is_active"
 
         ]
 
