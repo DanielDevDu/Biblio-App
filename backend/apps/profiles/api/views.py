@@ -5,6 +5,7 @@ from apps.users.models import Librarian, Reader
 from apps.profiles.models import ReaderProfile, LibrarianProfile
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 
@@ -38,10 +39,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class LibrarianProfileViewSet(UserProfileViewSet):
     queryset = LibrarianProfile.objects.all()
     serializer_class = LibrarianProfileSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
 class ReaderProfileViewSet(UserProfileViewSet):
     queryset = ReaderProfile.objects.all()
     serializer_class = ReaderProfileSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticated]

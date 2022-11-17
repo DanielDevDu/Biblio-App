@@ -7,6 +7,8 @@ from django.conf import settings
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from apps.users.api.views import Login,Logout
+
 
 
 schema_view = get_schema_view(
@@ -30,11 +32,10 @@ urlpatterns = [
     path("api/v1/auth/", include("djoser.urls")),
     path("api/v1/auth/", include("djoser.urls.jwt")),
     # path("api/v1/", include("apps.api.urls")),
-    path("api/v1/profile/", include("apps.profiles.api.routers"))
+    path("api/v1/profile/", include("apps.profiles.api.routers")),
+   #  path('api/v1/auth/logout/', Logout.as_view(), name = 'logout'),
+   # path('api/v1/auth/login/',Login.as_view(), name = 'login'),
 
-    # path('api/', include("apps.users.api.urls")),
-    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # path('accounts/', include('django.contrib.auth.urls'))
 ] #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]

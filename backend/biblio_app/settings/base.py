@@ -57,7 +57,6 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     "django_countries",
     "phonenumber_field",
-    "rest_framework.authtoken",
     "djoser",
     "rest_framework_simplejwt",
     'drf_yasg',
@@ -163,16 +162,19 @@ AUTH_USER_MODEL = "users.User"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
 }
 
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": (
-        # "Bearer",
-        "JWT",
+        "Bearer",
+        # "JWT",
     ),
-    # "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
     # "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     # "SIGNING_KEY": env("SIGNING_KEY"),
     # "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
@@ -192,10 +194,10 @@ DJOSER = {
     "ACTIVATION_URL": "activate/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
     "SERIALIZERS": {
-        "user_create": "apps.users.serializers.api.CreateUserSerializer,",
-        "user": "apps.users.api.serializers.UserCreateSerializer",
-        # "current_user": "apps.users.serializers.UserSerializer",
-        "user_delete": "djoser.serializers.api.UserDeleteSerializer",
+        "user_create": "apps.users.api.serializers.CreateUserSerializer,",
+        "user": "apps.users.api.serializers.CustomDjoserUserSerializer",
+        "current_user": "apps.users.api.serializers.CustomDjoserUserSerializer",
+        "user_delete": "djoser.serializers.UserDeleteSerializer",
     },
 }
 

@@ -5,13 +5,24 @@ Serializers to User Model
 """
 from django.contrib.auth import get_user_model
 from django_countries.serializer_fields import CountryField
-from djoser.serializers import UserCreateSerializer
+from djoser.serializers import UserCreateSerializer, UserSerializer as DjoserUserSerializer
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 
 from apps.users.models import Librarian, Reader
 
 User = get_user_model()
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    pass
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username','email','first_name','last_name')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -117,15 +128,32 @@ class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
         fields = ["id", "username", "email", "first_name", "last_name", "password", "role"]
-    
+
     def validate_role(self, value):
-        """
-        --------------------------------
-        Validate the role of the user
-        --------------------------------
-        """
-        if value in ["ADMIN", "admin"]:
-            raise serializers.ValidationError("You can't create an admin")
-        elif value not in ["reader", "librarian", "READER", "LIBRARIAN"]:
-            raise serializers.ValidationError("Invalid role")
+        if value not in ["reader", "librarian"]:
+            raise serializers.ValidationError("Role must be either reader or librarian")
         return value
+    
+
+
+class CustomDjoserUserSerializer(DjoserUserSerializer):
+    """
+    --------------------------------
+    Class that serialize User model
+    --------------------------------
+    """
+
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ["id", "username", "email", "first_name", "last_name", "role", "pkid"]
+        read_only_fields = ["id", "pkid", "username", "email", "role"]
+
+    def update(self, instance, validated_data):
+        """
+        ---------------------------------------------
+        Custom update method of the user model
+        Update the others models of the user
+        ---------------------------------------------
+        """
+        print("IN update from DjsoerUserSerializer")
+        return super().update(instance, validated_data)

@@ -17,7 +17,7 @@ develop-backend: ## Run backend in development mode
 
 check-backend:
 	@echo "Checking backend..."
-	@cd backend && python manage.py check && cd ..
+	@cd backend && docker-compose exec api python manage.py check && cd ..
 
 build-backend:
 	@echo "Building backend..."
